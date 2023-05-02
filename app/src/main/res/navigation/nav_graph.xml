@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/compatibilityFragment"
-        android:name="com.javr.horoscopapp.ui.compatibility.CompatibilityFragment"
+        android:name="com.javr.horoscopapp.ui.lucky.LuckyFragment"
         android:label="fragment_compatibility"
-        tools:layout="@layout/fragment_compatibility" />
+        tools:layout="@layout/fragment_lucky" />
 
     <fragment
         android:id="@+id/listFragment"
