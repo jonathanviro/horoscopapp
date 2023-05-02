@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
-import androidx.core.animation.doOnStart
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,6 +15,7 @@ import androidx.fragment.app.viewModels
 import com.javr.horoscopapp.R
 import com.javr.horoscopapp.databinding.FragmentLuckyBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -25,6 +25,8 @@ class LuckyFragment : Fragment() {
     private var _binding: FragmentLuckyBinding? = null
     private val binding get() = _binding!!
 
+    @Inject
+    lateinit var randomCardsProvider: RandomCardsProvider
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -33,6 +35,7 @@ class LuckyFragment : Fragment() {
             flipCard()
         }
     }
+
 
     private fun flipCard() {
         try {
@@ -72,23 +75,15 @@ class LuckyFragment : Fragment() {
     }
 
     private fun preparedCard() {
-        val image = when (Random.nextInt(0, 5)) {
-            0 -> R.drawable.card_fool
-            1 -> R.drawable.card_moon
-            2 -> R.drawable.card_hermit
-            3 -> R.drawable.card_star
-            4 -> R.drawable.card_sun
-            5 -> R.drawable.card_sword
-            else -> {
-                R.drawable.card_reverse
-            }
-        }
+        val luck = randomCardsProvider.getLucky()
 
         binding.viewFrontContainer.ivLuckyCard.setImageDrawable(
             ContextCompat.getDrawable(
-                requireContext(), image
+                requireContext(), luck.image
             )
         )
+
+        binding.tvLuckyInfo.text = getString(luck.text)
     }
 
     override fun onCreateView(
